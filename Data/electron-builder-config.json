@@ -1,0 +1,23 @@
+﻿{
+  "appId": "ara.fakerpc",
+  "productName": "FakeRtcForDis",
+  "files": [
+    "src/**/*",
+    "python-embed/**/*",
+    "python/**/*"
+  ],
+  "extraResources": [],
+  "asar": false,
+  "npmRebuild": false,
+  "win": {
+    "icon": "scr/img/discord-anime-app-icon.ico",
+    "target": [
+      "portable",
+      "nsis"
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
+  }
+}
