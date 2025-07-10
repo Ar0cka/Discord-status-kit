@@ -32,8 +32,8 @@ DiscordStatusKit is a simple utility that helps you build and manage custom Disc
 
 ## 📸 Screenshots
 
-- [img]https://i.imgur.com/yVUvwpO.png[/img]
-- ![Displayed Result](https://imgur.com/yVUvwpO)
+- [Interface Preview](./ReadmeAssets/Fake-rpc-Imgur.png)
+- [Displayed Result](./ReadmeAssets/Fake-rpc-Imgur(1).png)
 
 ## 🔗 Useful Links
 
