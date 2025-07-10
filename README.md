@@ -71,12 +71,10 @@ project-root/
 📸 Скриншот
 
 Приложение:
-
-    [{E4A0F1E8-F1A1-42D7-8A7D-BA9AE3C7D5E0}](https://github.com/user-attachments/assets/d9051bdf-15ae-43da-b074-a3a961a461df)
+ [{E4A0F1E8-F1A1-42D7-8A7D-BA9AE3C7D5E0}](https://github.com/user-attachments/assets/d9051bdf-15ae-43da-b074-a3a961a461df)
 
 Результат работы
-
-    [Uploading {C5D70453-75CE-4CAF-972B-EC4B0B95A3E9}.png…]()
+[Uploading {C5D70453-75CE-4CAF-972B-EC4B0B95A3E9}.png…]()
 
 
 🔗 Ссылки
