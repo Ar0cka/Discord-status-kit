@@ -31,8 +31,10 @@ DiscordStatusKit is a simple utility that helps you build and manage custom Disc
 💡 This presence will be visible to **all** users, just like game activity.
 
 ## 📸 Screenshots
-
+Interface Preview:
 - ![Interface Preview](./ReadmeAssets/Fake-rpc-Imgur.png)
+
+Displayed Result
 - ![Displayed Result](./ReadmeAssets/Fake-rpc-Imgur(1).png)
 
 ## 🔗 Useful Links
