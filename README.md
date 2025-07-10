@@ -71,12 +71,10 @@ project-root/
 📸 Скриншоты
 
 [Приложение](https://imgur.com/a/wzWc1VA)
-
-Результат работы
 [Результат](https://imgur.com/yVUvwpO)
 
 
 🔗 Ссылки
 
-    Discord Developer Portal - https://discord.com/developers/applications
-    Документация pypresence - 
+[Discord Developer Portal](https://discord.com/developers/applications)
+[Документация pypresence](https://qwertyquerty.github.io/pypresence/html/index.html) 
