@@ -1,70 +1,41 @@
+# DiscordStatusKit
 
-FakeStatusRTC
+DiscordStatusKit is a simple utility that helps you build and manage custom Discord Rich Presence statuses. The app is fully bundled with Python and dependencies — no setup needed.
 
-FakeStatusRTC — это десктопное приложение на базе Electron, которое позволяет настроить и отправить кастомный Discord Rich Presence статус с помощью удобного графического интерфейса. Работает «из коробки»: Python и все зависимости уже включены в сборку.
-🧰 Возможности
+## 🧰 What You Can Do
 
-    Отправка кастомного Discord RPC-статуса с полями:
+- Input:
+  - App ID
+  - Details
+  - Large/Small Image keys and their tooltips
+- One-click connect and disconnect
+- See live presence changes instantly
+- Connection indicator built-in
 
-        App ID
+## 🚀 Launching
 
-        Details
+- Grab the installer or portable version from [Releases](https://github.com/Ar0cka/FakeStatusRTC/releases)
+- Run it — that’s it.
 
-        Large Image и его описание (tooltip)
+✅ No Python installation required.
 
-        Small Image и его описание
+## 🧪 Creating a Discord Developer Application
 
-    Статус обновляется в реальном времени
+1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
+2. Click “New Application”, set a name, create it
+3. Open **Rich Presence > Art Assets**
+4. Upload images (case-sensitive names!)
+5. Copy your **Client ID** — it’s your App ID
+6. Make sure Discord is running locally
 
-    Кнопка отключения и автоматическое завершение при закрытии окна
+💡 This presence will be visible to **all** users, just like game activity.
 
-    Индикация подключения
+## 📸 Screenshots
 
-    Быстрый переход на GitHub-репозиторий проекта
+- [Interface Preview](https://imgur.com/a/wzWc1VA)
+- [Displayed Result](https://imgur.com/yVUvwpO)
 
-🚀 Как начать
+## 🔗 Useful Links
 
-Просто:
-
-    Скачай установщик или portable-версию из релизов
-
-    Запусти приложение
-
-    ✅ Не требуется установка Python — всё включено в сборку.
-
-🧪 Как создать Discord-приложение
-
-Чтобы статус работал, нужно создать своё приложение в Discord Developer Portal:
-
-    Перейди в Discord Developer Portal
-
-    Нажми "New Application", придумай название и нажми "Create"
-
-    Перейди в раздел Rich Presence > Art Assets
-
-    Загрузите изображения:
-
-        Одно или несколько Large Images
-
-        Одно или несколько Small Images
-
-    Запомни:
-
-        Client ID — это и есть App ID (вводится в интерфейсе FakeStatusRTC)
-
-        Имена изображений чувствительны к регистру
-
-    Убедись, что Discord запущен на том же компьютере
-
-    💡 Rich Presence отображается всем пользователям, как обычная активность. Не только тебе.
-
-📸 Скриншоты
-
-[Приложение](https://imgur.com/a/wzWc1VA)
-[Результат](https://imgur.com/yVUvwpO)
-
-
-🔗 Ссылки
-
-[Discord Developer Portal](https://discord.com/developers/applications)
-[Документация pypresence](https://qwertyquerty.github.io/pypresence/html/index.html) 
+- [Discord Developer Portal](https://discord.com/developers/applications)
+- [pypresence Docs](https://qwertyquerty.github.io/pypresence/html/index.html)
