@@ -12,8 +12,6 @@
   "win": {
     "icon": "scr/img/discord-anime-app-icon.ico",
     "target": [
-      "portable",
-      "nsis"
     ]
   },
   "nsis": {

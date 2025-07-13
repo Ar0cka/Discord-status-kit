@@ -33,11 +33,14 @@ const statusStyle = document.getElementById("connect_status");
 const submitData = document.getElementById("send_data_btn");
 const disconnect = document.getElementById("disconnect_btn");
 const data = new FormElements();
-const { ipcRenderer } = require('electron');
 
 let connect_result = false;
 
 async function sendData() {
+    if (!CheckInputs){
+        return;
+    }
+
     if (connect_result) {
         console.log("Already connected, skipping");
         return;
@@ -45,56 +48,49 @@ async function sendData() {
 
     const send_data_struct = data.getValues();
 
-    for (const [key, value] of Object.entries(send_data_struct)) {
-        if (!value.trim()) {
-            console.error(`Empty field: ${key}`);
-            return;
-        }
-    }
-
     console.log('Sending data to main process');
-    ipcRenderer.send('submit-form', send_data_struct);
-
-    ipcRenderer.once('submit-form-response', (event, success) => {
-        console.log('Received response:', success);
-        if (success) {
-            connect_result = true;
-            statusStyle.style.backgroundColor = "green";
-            console.log("RPC connection established");
-        } else {
-            statusStyle.style.backgroundColor = "red";
-            console.error("Failed to connect to Discord");
-        }
-    });
+    window.electronApi.sendData(send_data_struct)
 }
 
 async function disconnectFromDis() {
-    if (!connect_result) {
-        console.log("Not connected, skipping disconnect");
-        return;
-    }
-
     console.log('Sending disconnect signal');
-    ipcRenderer.send('end-connect');
-
-    ipcRenderer.once('end-connect-response', (event, success) => {
-        console.log('Received disconnect response:', success);
-        if (success) {
-            connect_result = false;
-            statusStyle.style.backgroundColor = "red";
-            console.log("RPC disconnected successfully");
-        } else {
-            console.error("Failed to disconnect");
-        }
-    });
+    window.electronApi.sendDisconnect('end-connect');
 }
+
+window.electronApi.updateStatus((status) => {
+    console.log("change status = ", status)
+
+    switch (status){
+        case 'start':
+            statusStyle.style.backgroundColor = "green";
+            break;
+        case 'end':
+            statusStyle.style.backgroundColor = "red";
+            break;
+        default:
+            console.log("not find this type")
+    }
+})
 
 window.addEventListener('beforeunload', () => {
     if (connect_result) {
         console.log('Window closing, sending disconnect signal');
-        ipcRenderer.send('end-connect');
+
     }
 });
+
+let idInput = document.getElementById("idInput");
+let largeImgInput = document.getElementById("large_image_input");
+let smallImgInput = document.getElementById("small_image_input");
+
+function CheckInputs(){
+    if (!idInput.value || !largeImgInput.value || !smallImgInput.value){
+        console.log("Not find needed values");
+        return false;
+    }
+
+    return true;
+}
 
 submitData.addEventListener('click', sendData);
 disconnect.addEventListener('click', disconnectFromDis);

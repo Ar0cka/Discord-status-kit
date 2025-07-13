@@ -1,52 +1,36 @@
 ﻿const { app, BrowserWindow, ipcMain } = require('electron');
-const path = require('path');
+const path = require('node:path');
 const { spawn } = require('child_process');
 
 let mainWindow;
 let pyProc = null;
 
-const projectRoot = path.resolve(__dirname, '../../');
-
-function getPythonPath() {
-  if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
-    return path.join(projectRoot, 'python-embed', 'python.exe'); // 🔧 тут убрал "app"
-  }
-  return path.join(process.resourcesPath, 'python-embed', 'python.exe');
-}
-
-function getScriptPath() {
-  if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
-    return path.join(__dirname, '../python/api.py'); // тут ок
-  }
-  return path.join(process.resourcesPath, 'src', 'python', 'api.py');
-}
-
 function createWindow() {
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 800,
+        width: 1200,
+        height: 900,
         webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
+            preload: path.join(__dirname, 'preload.js'),
+            contextIsolation: true,
+            nodeIntegration: false
         },
         frame: false,
         transparent: true,
         resizable: false
     });
 
-    mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
+    let returned = mainWindow.loadFile('dist/win-unpacked/resources/app/src/renderer/index.html');
+
+    if (returned == null){
+        mainWindow.Close();
+    }
+
+    mainWindow.webContents.openDevTools();
     mainWindow.removeMenu();
 }
 
 function startPythonApi() {
-    const pythonPath = getPythonPath();
-    const scriptPath = getScriptPath();
-
-    console.log('Starting Python process with:');
-    console.log('Python path:', pythonPath);
-    console.log('Script path:', scriptPath);
-
-    pyProc = spawn(pythonPath, [scriptPath]);
+    pyProc = require('child_process').spawn('./python-embed/python.exe', ['./src/python/api.py'])
 
     pyProc.stderr.on('data', (data) => {
         const errorMsg = data.toString();
@@ -61,8 +45,17 @@ function startPythonApi() {
     pyProc.on('error', (err) => {
         console.error('Failed to start Python process:', err);
     });
-}
 
+    pyProc.stdout.on('change-status', (data) =>{
+    try {
+        const message = JSON.parse(data.toString().trim());
+        mainWindow.webContents.send('update-status', message)
+    }
+    catch (e){
+        console.error('Error parsing')
+    }
+});
+}
 app.whenReady().then(() => {
     createWindow();
     startPythonApi();
@@ -95,23 +88,10 @@ ipcMain.on('submit-form', (event, formData) => {
         data: formData
     };
 
+    console.log('Start sending data from main js');
+
     pyProc.stdin.write(JSON.stringify(command) + '\n');
-
-    const handleResponse = (data) => {
-        try {
-            const response = JSON.parse(data.toString());
-            console.log('Python start response:', response);
-            event.sender.send('submit-form-response', response.success);
-            pyProc.stdout.off('data', handleResponse);
-        } catch (err) {
-            console.error('Error parsing Python response:', err);
-            console.log('Raw output:', data.toString());
-        }
-    };
-
-    pyProc.stdout.on('data', handleResponse);
 });
-
 ipcMain.on('end-connect', (event) => {
     if (!pyProc) {
         console.error('Python process is not running');
@@ -124,18 +104,4 @@ ipcMain.on('end-connect', (event) => {
     };
 
     pyProc.stdin.write(JSON.stringify(command) + '\n');
-
-    const handleResponse = (data) => {
-        try {
-            const response = JSON.parse(data.toString());
-            console.log('Python stop response:', response);
-            event.sender.send('end-connect-response', response.success);
-            pyProc.stdout.off('data', handleResponse);
-        } catch (err) {
-            console.error('Error parsing Python response:', err);
-            console.log('Raw output:', data.toString());
-        }
-    };
-
-    pyProc.stdout.on('data', handleResponse);
 });

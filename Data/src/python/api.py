@@ -20,103 +20,98 @@ logging.basicConfig(
 rpc_client = None
 start_time = None
 
-
 def handle_command(command):
     global rpc_client, start_time
 
-    try:
-        logging.info(f'Received command: {command}')
+    logging.info(f'start handling command = {command}')
 
-        if command['action'] == 'start':
+    action = command['action']
+
+    logging.info(f'action = {action}')
+
+    if action == 'start': #Take command from frontend and start.
+        if rpc_client is not None:
+            logging.debug('RPC Client already running', rpc_client)
+            return
+
+        try:
             data = command['data']
-            logging.info(f'Starting RPC with data: {data}')
 
-            if rpc_client is not None:
-                try:
-                    logging.info('Closing existing RPC connection')
-                    rpc_client.close()
-                except Exception as e:
-                    logging.error(f'Error closing existing connection: {e}')
+            logging.debug(f'Start connect with data: {data}')
 
-            try:
-                logging.info(f'Creating new Presence with app ID: {data["appId"]}')
-                rpc_client = Presence(data['appId'])
+            rpc_client = Presence(data['appId'])
+            logging.debug('Connecting to RPC Client')
+            rpc_client.connect()
+            logging.debug('Connected to RPC Client')
 
-                logging.info('Connecting to Discord...')
-                rpc_client.connect()
-                logging.info('Successfully connected to Discord')
+            start_time = (int(time.time()))
 
-                start_time = int(time.time())
-                logging.info(f'Setting start time: {start_time}')
+            rpc_client.update(
+                details=data['details'],
+                large_image=data['largeImage'],
+                small_image=data['smallImage'],
+                small_text=data['smallText'],
+                large_text=data['largeText'],
+                start=start_time
+            )
 
-                logging.info('Updating presence with data...')
-                rpc_client.update(
-                    details=data['details'],
-                    large_image=data['largeImage'],
-                    large_text=data['largeText'],
-                    small_image=data['smallImage'],
-                    small_text=data['smallText'],
-                    start=start_time
-                )
-                logging.info('Presence updated successfully')
+            send_change_status('start')
 
-                print(json.dumps({'success': True}))
-                sys.stdout.flush()
+        except DiscordNotFound as e:
+            logging.debug('Discord Not Found', e)
+            rpc_client = None
+        except InvalidPipe as e:
+            logging.debug('Invalid Pipe', e)
+        except Exception as e:
+            logging.debug('Exception', e)
 
-            except DiscordNotFound:
-                logging.error('Discord not found')
-                print(json.dumps({'success': False, 'error': 'Discord not found'}))
-                sys.stdout.flush()
-            except InvalidPipe:
-                logging.error('Invalid pipe (Discord not running?)')
-                print(json.dumps({'success': False, 'error': 'Invalid pipe'}))
-                sys.stdout.flush()
-            except Exception as e:
-                logging.error(f'Failed to connect: {str(e)}')
-                print(json.dumps({'success': False, 'error': str(e)}))
-                sys.stdout.flush()
+    if action == 'stop':
+        if rpc_client is None:
+            logging.debug('RPC Client not running', rpc_client)
 
-        elif command['action'] == 'stop':
-            logging.info('Received stop command')
-            if rpc_client is not None:
-                try:
-                    logging.info('Closing RPC connection')
-                    rpc_client.close()
-                    rpc_client = None
-                    start_time = None
-                    logging.info('RPC disconnected successfully')
-                    print(json.dumps({'success': True}))
-                except Exception as e:
-                    logging.error(f'Error disconnecting: {e}')
-                    print(json.dumps({'success': False, 'error': str(e)}))
-            else:
-                logging.warning('No active connection to close')
-                print(json.dumps({'success': False, 'error': 'No active connection'}))
-            sys.stdout.flush()
+        logging.info('Start stopping RPC Client')
 
-    except Exception as e:
-        logging.error(f'Error handling command: {e}')
-        print(json.dumps({'success': False, 'error': str(e)}))
-        sys.stdout.flush()
+        try:
+            logging.debug('StartDisconnecting')
+            rpc_client.close()
+            rpc_client = None
+            logging.debug('RPC Client disconnected')
+            send_change_status('stop')
+
+        except Exception as e:
+            logging.debug('Error', e)
+            rpc_client.close()
+            rpc_client = None
+
+def send_change_status(status:str):
+    message = json.dumps({'command': status})
+    print(message)
+    sys.stdout.flush()
 
 
 def main():
     logging.info('Starting Discord RPC script')
+
     while True:
-        try:
-            line = sys.stdin.readline()
-            if not line:
-                logging.info('Input stream closed')
-                break
+        line = sys.stdin.readline()
 
-            logging.debug(f'Received line: {line.strip()}')
-            command = json.loads(line)
-            handle_command(command)
+        if not line:
+            logging.warning('Discord RPC script exiting')
+            break
 
-        except Exception as e:
-            logging.error(f'Error in main loop: {e}')
-            print(json.dumps({'success': False, 'error': str(e)}))
-            sys.stdout.flush()
+        line = line.strip()
+        if not line:
+            logging.debug('Discord RPC script exiting')
+            break
+
+        if line:
+            logging.info("Enter in start method coz main take data")
+            try:
+                command = json.loads(line)
+                handle_command(command)
+            except Exception as e:
+                logging.debug('Exception', e)
+                sys.stdout.flush()
 
 
 if __name__ == '__main__':

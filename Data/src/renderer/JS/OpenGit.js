@@ -1,4 +1,4 @@
-﻿const ref = "https://github.com/Ar0cka";
+﻿const ref = "https://github.com/Ar0cka/Discord-status-kit";
 
 const submitBtn = document.getElementById("githubBtn"); // или по id/class
 
