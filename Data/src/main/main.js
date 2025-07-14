@@ -7,7 +7,7 @@ let pyProc = null;
 
 function createWindow() {
     mainWindow = new BrowserWindow({
-        width: 1200,
+        width: 900,
         height: 900,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
@@ -19,18 +19,25 @@ function createWindow() {
         resizable: false
     });
 
-    let returned = mainWindow.loadFile('dist/win-unpacked/resources/app/src/renderer/index.html');
+    let returned = mainWindow.loadFile('./src/renderer/index.html');
 
     if (returned == null){
         mainWindow.Close();
     }
 
-    mainWindow.webContents.openDevTools();
     mainWindow.removeMenu();
 }
 
+let buffer = ''
+
 function startPythonApi() {
-    pyProc = require('child_process').spawn('./python-embed/python.exe', ['./src/python/api.py'])
+    const pythonExePath = './resources/app/python-embed/python.exe';
+    const pythonApiPath = './resources/app/src/python/api.py';
+
+    console.log("python path = ", pythonExePath);
+    console.log("python api path = ", pythonApiPath);
+
+    pyProc = spawn(pythonExePath, [pythonApiPath])
 
     pyProc.stderr.on('data', (data) => {
         const errorMsg = data.toString();
@@ -46,14 +53,23 @@ function startPythonApi() {
         console.error('Failed to start Python process:', err);
     });
 
-    pyProc.stdout.on('change-status', (data) =>{
-    try {
-        const message = JSON.parse(data.toString().trim());
-        mainWindow.webContents.send('update-status', message)
-    }
-    catch (e){
-        console.error('Error parsing')
-    }
+    pyProc.stdout.on('data', (data) =>{
+        buffer += data.toString();
+
+        let lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for (const line of lines){
+            if (!line.trim()) continue;
+            try {
+                const message = JSON.parse(line.trim());
+                console.log("message = ", message);
+                mainWindow.webContents.send('update-status', message);
+            }
+            catch (e){
+                console.error('Error parsing')
+            }
+        }
 });
 }
 app.whenReady().then(() => {
@@ -105,3 +121,4 @@ ipcMain.on('end-connect', (event) => {
 
     pyProc.stdin.write(JSON.stringify(command) + '\n');
 });
+

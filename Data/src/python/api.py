@@ -29,9 +29,9 @@ def handle_command(command):
 
     logging.info(f'action = {action}')
 
-    if action == 'start': #Take command from frontend and start.
+    if action == 'start':
         if rpc_client is not None:
-            logging.debug('RPC Client already running', rpc_client)
+            logging.info('RPC Client already running', rpc_client)
             return
 
         try:
@@ -41,8 +41,8 @@ def handle_command(command):
 
             rpc_client = Presence(data['appId'])
             logging.debug('Connecting to RPC Client')
+
             rpc_client.connect()
-            logging.debug('Connected to RPC Client')
 
             start_time = (int(time.time()))
 
@@ -52,8 +52,10 @@ def handle_command(command):
                 small_image=data['smallImage'],
                 small_text=data['smallText'],
                 large_text=data['largeText'],
-                start=start_time
+                start=start_time,
             )
+
+            logging.info('RPC Client connected and update data')
 
             send_change_status('start')
 
@@ -84,8 +86,10 @@ def handle_command(command):
             rpc_client = None
 
 def send_change_status(status:str):
+    logging.info(f'send change status: {status}')
     message = json.dumps({'command': status})
-    print(message)
+    print(message, flush=True)
+    logging.debug(f'check message: {json.loads(message)}')
     sys.stdout.flush()
 
 

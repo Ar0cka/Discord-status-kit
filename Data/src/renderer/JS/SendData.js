@@ -41,11 +41,6 @@ async function sendData() {
         return;
     }
 
-    if (connect_result) {
-        console.log("Already connected, skipping");
-        return;
-    }
-
     const send_data_struct = data.getValues();
 
     console.log('Sending data to main process');
@@ -60,11 +55,13 @@ async function disconnectFromDis() {
 window.electronApi.updateStatus((status) => {
     console.log("change status = ", status)
 
-    switch (status){
+    let command = status['command']
+
+    switch (command){
         case 'start':
             statusStyle.style.backgroundColor = "green";
             break;
-        case 'end':
+        case 'stop':
             statusStyle.style.backgroundColor = "red";
             break;
         default:
