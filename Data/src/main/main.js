@@ -39,8 +39,6 @@ function createWindow() {
         mainWindow.Close();
     }
 
-    mainWindow.webContents.openDevTools();
-
     mainWindow.removeMenu();
 }
 
