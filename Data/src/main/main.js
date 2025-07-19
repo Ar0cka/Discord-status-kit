@@ -5,6 +5,20 @@ const { spawn } = require('child_process');
 let mainWindow;
 let pyProc = null;
 
+function loadPythonExe(){
+    if (app.isPackaged)
+        return './resources/app/python-embed/python.exe';
+    else
+        return './python-embed/python.exe'
+}
+
+function loadPythonApi(){
+    if (app.isPackaged)
+        return './resources/app/src/python/api.py';
+    else
+        return './src/python/api.py';
+}
+
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 900,
@@ -25,14 +39,16 @@ function createWindow() {
         mainWindow.Close();
     }
 
+    mainWindow.webContents.openDevTools();
+
     mainWindow.removeMenu();
 }
 
 let buffer = ''
 
 function startPythonApi() {
-    const pythonExePath = './resources/app/python-embed/python.exe';
-    const pythonApiPath = './resources/app/src/python/api.py';
+    const pythonExePath = loadPythonExe();
+    const pythonApiPath = loadPythonApi();
 
     console.log("python path = ", pythonExePath);
     console.log("python api path = ", pythonApiPath);
@@ -94,7 +110,7 @@ app.on('window-all-closed', () => {
 });
 
 ipcMain.on('submit-form', (event, formData) => {
-    if (!pyProc) {
+    if (!CheckPython) {
         console.error('Python process is not running');
         return;
     }
@@ -109,8 +125,7 @@ ipcMain.on('submit-form', (event, formData) => {
     pyProc.stdin.write(JSON.stringify(command) + '\n');
 });
 ipcMain.on('end-connect', (event) => {
-    if (!pyProc) {
-        console.error('Python process is not running');
+    if (!CheckPython){
         event.sender.send('end-connect-response', false);
         return;
     }
@@ -121,4 +136,25 @@ ipcMain.on('end-connect', (event) => {
 
     pyProc.stdin.write(JSON.stringify(command) + '\n');
 });
+
+ipcMain.on('update-data', (event, data) => {
+    if (!CheckPython){
+        event.sender.send('end-connect-response', false);
+        return;
+    }
+
+    const command = {
+        action: 'update',
+        data: data
+    }
+
+    pyProc.stdin.write(JSON.stringify(command) + '\n');
+})
+
+function CheckPython(){
+    if (!pyProc) {
+        console.error('Python process is not running');
+        return false;
+    }
+}
 

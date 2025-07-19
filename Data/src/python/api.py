@@ -17,7 +17,7 @@ logging.basicConfig(
     filename='discord_rpc.log'
 )
 
-rpc_client = None
+rpc_client: Presence = None
 start_time = None
 
 def handle_command(command):
@@ -30,60 +30,15 @@ def handle_command(command):
     logging.info(f'action = {action}')
 
     if action == 'start':
-        if rpc_client is not None:
-            logging.info('RPC Client already running', rpc_client)
-            return
-
-        try:
-            data = command['data']
-
-            logging.debug(f'Start connect with data: {data}')
-
-            rpc_client = Presence(data['appId'])
-            logging.debug('Connecting to RPC Client')
-
-            rpc_client.connect()
-
-            start_time = (int(time.time()))
-
-            rpc_client.update(
-                details=data['details'],
-                large_image=data['largeImage'],
-                small_image=data['smallImage'],
-                small_text=data['smallText'],
-                large_text=data['largeText'],
-                start=start_time,
-            )
-
-            logging.info('RPC Client connected and update data')
-
-            send_change_status('start')
-
-        except DiscordNotFound as e:
-            logging.debug('Discord Not Found', e)
-            rpc_client = None
-        except InvalidPipe as e:
-            logging.debug('Invalid Pipe', e)
-        except Exception as e:
-            logging.debug('Exception', e)
+        start_action(command['data'])
 
     if action == 'stop':
-        if rpc_client is None:
-            logging.debug('RPC Client not running', rpc_client)
+        disconnect()
 
-        logging.info('Start stopping RPC Client')
+    if action == 'update':
+        update_data(command['data'])
 
-        try:
-            logging.debug('StartDisconnecting')
-            rpc_client.close()
-            rpc_client = None
-            logging.debug('RPC Client disconnected')
-            send_change_status('stop')
 
-        except Exception as e:
-            logging.debug('Error', e)
-            rpc_client.close()
-            rpc_client = None
 
 def send_change_status(status:str):
     logging.info(f'send change status: {status}')
@@ -91,6 +46,88 @@ def send_change_status(status:str):
     print(message, flush=True)
     logging.debug(f'check message: {json.loads(message)}')
     sys.stdout.flush()
+def start_action(data):
+    global rpc_client, start_time
+
+    if rpc_client is not None:
+        logging.info('RPC Client already running', rpc_client)
+        return
+
+    try:
+        logging.debug(f'Start connect with data: {data}')
+
+        rpc_client = Presence(data['appId'])
+        logging.debug('Connecting to RPC Client')
+
+        rpc_client.connect()
+
+        start_time = (int(time.time()))
+
+        rpc_client.update(
+            details=data['details'],
+            large_image=data['largeImage'],
+            small_image=data['smallImage'],
+            small_text=data['smallText'],
+            large_text=data['largeText'],
+            start=start_time,
+        )
+
+        logging.info('RPC Client connected and update data')
+
+        send_change_status('start')
+
+    except DiscordNotFound as e:
+        logging.debug('Discord Not Found', e)
+        rpc_client = None
+    except InvalidPipe as e:
+        logging.debug('Invalid Pipe', e)
+    except Exception as e:
+        logging.debug('Exception', e)
+
+def disconnect():
+    global rpc_client
+
+    if rpc_client is None:
+        logging.debug('RPC Client not running', rpc_client)
+
+    logging.info('Start stopping RPC Client')
+
+    try:
+        logging.debug('StartDisconnecting')
+        rpc_client.close()
+        rpc_client = None
+        logging.debug('RPC Client disconnected')
+        send_change_status('stop')
+
+    except Exception as e:
+        logging.debug('Error', e)
+        rpc_client.close()
+        rpc_client = None
+
+def update_data(data):
+    global rpc_client, start_time
+    if rpc_client is None:
+        logging.debug('RPC Client not running', rpc_client)
+
+        start_time = (int(time.time()))
+
+    try:
+        rpc_client.update(
+            details=data['details'],
+            large_image=data['largeImage'],
+            small_image=data['smallImage'],
+            small_text=data['smallText'],
+            large_text=data['largeText'],
+            start=start_time,
+        )
+    except DiscordNotFound as e:
+        logging.debug('Discord Not Found', e)
+        rpc_client = None
+    except InvalidPipe as e:
+        logging.debug('Invalid Pipe', e)
+    except Exception as e:
+        logging.debug('Exception', e)
+
 
 
 def main():

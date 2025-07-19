@@ -32,6 +32,7 @@
 const statusStyle = document.getElementById("connect_status");
 const submitData = document.getElementById("send_data_btn");
 const disconnect = document.getElementById("disconnect_btn");
+const update = document.getElementById("update_btn");
 const data = new FormElements();
 
 let connect_result = false;
@@ -50,6 +51,16 @@ async function sendData() {
 async function disconnectFromDis() {
     console.log('Sending disconnect signal');
     window.electronApi.sendDisconnect('end-connect');
+}
+
+async function updateDatas(){
+    if (!CheckInputs){
+        return;
+    }
+
+    const send_data_struct = data.getValues();
+    console.log('Send data for update');
+    window.electronApi.updateData(send_data_struct);
 }
 
 window.electronApi.updateStatus((status) => {
@@ -91,3 +102,4 @@ function CheckInputs(){
 
 submitData.addEventListener('click', sendData);
 disconnect.addEventListener('click', disconnectFromDis);
+update.addEventListener('click', updateDatas);
