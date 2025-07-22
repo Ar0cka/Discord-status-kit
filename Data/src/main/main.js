@@ -149,6 +149,14 @@ ipcMain.on('update-data', (event, data) => {
     pyProc.stdin.write(JSON.stringify(command) + '\n');
 })
 
+ipcMain.on('load-json-data', (event, data) => {
+    //Логика выбора данных + проверки.
+})
+
+ipcMain.on('Send-data-to-renderer', (event, data) => {
+    //отправка данных в renderer (возможно стоит перенести в ipcMain.on('load-json-data');
+})
+
 function CheckPython(){
     if (!pyProc) {
         console.error('Python process is not running');
