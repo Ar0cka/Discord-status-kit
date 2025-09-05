@@ -33,13 +33,12 @@ DiscordStatusKit is a simple utility that helps you build and manage custom Disc
 ## 📸 Screenshots
 Interface Preview:
 
-   ![Interface Preview](./ReadmeAssets/App.png)
+   ![Interface Preview](./ReadmeAssets/NewApp.png)
 
 Displayed Result
 
-   ![Displayed Result](./ReadmeAssets/Profile.png)
+   ![Displayed Result](./ReadmeAssets/NewProfile.png)
 
 ## 🔗 Useful Links
 
 - [Discord Developer Portal](https://discord.com/developers/applications)
-- [pypresence Docs](https://qwertyquerty.github.io/pypresence/html/index.html)
