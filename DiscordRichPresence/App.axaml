@@ -1,0 +1,21 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="DiscordRichPresence.App"
+             xmlns:local="using:DiscordRichPresence"
+             RequestedThemeVariant="Light">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+     <Application.Resources>
+        <FontFamily x:Key="Catrinity">avares://DiscordRichPresence/Assets/Fonts/Catrinity.otf#Catrinity</FontFamily>
+    </Application.Resources>
+             
+    <Application.Styles>
+        <FluentTheme  />
+        <StyleInclude Source="Views/ElementsStyles.axaml"></StyleInclude>
+    </Application.Styles>
+    
+</Application>

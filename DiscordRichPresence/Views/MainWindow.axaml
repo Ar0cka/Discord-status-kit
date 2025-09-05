@@ -1,0 +1,98 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:DiscordRichPresence.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="550z"
+        MinWidth="500" MaxWidth="550"
+        MinHeight="550" MaxHeight="550"
+        x:Class="DiscordRichPresence.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/discord-anime-app-icon.ico"
+        Title="DiscordRichPresence">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <Grid>
+        <Image Source="/Assets/discord-wallpaper-preview.jpg"
+               Stretch="UniformToFill">
+        </Image>
+
+        <StackPanel Spacing="3">
+            <Grid Height="" ShowGridLines="False">
+                <Button Classes="GitHub" Grid.Column="0" Margin="5,0"
+                        Click="GitHubButton">
+                    <Image Source="../Assets/GitHubLog.jpg" Width="50"></Image>
+                </Button>
+                <Image Grid.Column="0" Source="/Assets/discord anime app icon.jpg"
+                       Width="100" Height="70"
+                       Margin="0, 10, 30, 0"></Image>
+                <Ellipse x:Name="ConnectionDot" Width="15" Height="15" Fill="Red"
+                         HorizontalAlignment="Right" Margin="0, 0, 10, 30"></Ellipse>
+            </Grid>
+
+            <TextBlock Text="Discord Rich Presence"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       FontSize="23"
+                       Foreground="LightBlue"
+                       Margin="0,10,40,0"/>
+
+            <Grid ShowGridLines="False" Margin="0, 10, 0, 0"
+                  Width="350"
+                  ColumnDefinitions="1*, 2*"
+                  RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto"
+                  HorizontalAlignment="Center">
+                <Label Grid.Row="0" Grid.Column="0" Margin="5">AppID</Label>
+                <TextBox x:Name="AppId" Grid.Row="0" Grid.Column="1" Margin="5">1390805853371760710</TextBox>
+                <Label Grid.Row="1" Grid.Column="0" Margin="5">Details</Label>
+                <TextBox x:Name="Details" Grid.Row="1" Grid.Column="1" Margin="5">UwU</TextBox>
+                <Label Grid.Row="2" Grid.Column="0" Margin="5">Status</Label>
+                <TextBox x:Name="Status" Grid.Row="2" Grid.Column="1" Margin="5">Solo</TextBox>
+                <Label Grid.Row="3" Grid.Column="0" Margin="5">Large Image</Label>
+                <TextBox x:Name="LargeImage" Grid.Row="3" Grid.Column="1" Margin="5">vscode</TextBox>
+                <Label Grid.Row="4" Grid.Column="0" Margin="5">Large Text</Label>
+                <TextBox x:Name="LargeText" Grid.Row="4" Grid.Column="1" Margin="5">failed</TextBox>
+                <Label Grid.Row="5" Grid.Column="0" Margin="5">Small Image</Label>
+                <TextBox x:Name="SmallImage" Grid.Row="5" Grid.Column="1" Margin="5">cute</TextBox>
+                <Label Grid.Row="6" Grid.Column="0" Margin="5">Small Text</Label>
+                <TextBox x:Name="SmallText" Grid.Row="6" Grid.Column="1" Margin="5">99 lazy level</TextBox>
+            </Grid>
+
+            <Grid ShowGridLines="False" Margin="0, 15, 0, 0"
+                  HorizontalAlignment="Center"
+                  ColumnDefinitions="Auto, Auto, Auto">
+                <Button x:Name="ConfirmButton" Click="UpdatePresence" Classes="MainButton"
+                        Grid.Column="0">
+                    Confirm
+                </Button>
+                <Button x:Name="UpdateButton"  Click="UpdateContext" Classes="MainButton"
+                        Grid.Column="1" Margin="5">
+                    Update
+                </Button>
+                <Button x:Name="EndConnectButton" Click="EndConnection" Classes="MainButton"
+                        Grid.Column="2">
+                    End connect
+                </Button>
+            </Grid>
+
+            <Grid ShowGridLines="False" Margin="0, 5, 0, 0"
+                  HorizontalAlignment="Center"
+                  ColumnDefinitions="Auto, Auto">
+                <Button x:Name="SaveConfig" Classes="MainButton" Click="SaveConfigData"
+                        Grid.Column="0" Margin="5" Content="Save config">
+                </Button>
+                <Button x:Name="LoadConfig" Classes="MainButton" Click="LoadConfigData"
+                        Grid.Column="1">
+                    Load config
+                </Button>
+            </Grid>
+        </StackPanel>
+    </Grid>
+
+
+</Window>

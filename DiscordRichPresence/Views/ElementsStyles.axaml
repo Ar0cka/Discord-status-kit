@@ -1,0 +1,35 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel>
+                <Button Content="MainButton" Classes="MainButton"></Button>
+                <Button Content="GitHub" Classes="GitHub"></Button>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+    
+    <Style Selector="Label">
+        <Setter Property="Foreground" Value="Aqua"></Setter>
+    </Style>
+    
+    <Style Selector="Button.MainButton">
+        <Setter Property="Background" Value="#80b1e8"></Setter>
+        <Setter Property="BorderBrush" Value="Black"></Setter>
+        <Setter Property="Foreground" Value="Black"></Setter>
+        <Setter Property="FontFamily" Value="{StaticResource Catrinity}"></Setter>
+        <Setter Property="FontSize" Value="16"></Setter>
+    </Style>
+    
+    <Style Selector="Button.MainButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="#729dcf"></Setter>
+    </Style>
+    
+    <Style Selector="Button.GitHub">
+        <Setter Property="Background" Value="#729dcf"></Setter>
+        <Setter Property="FontFamily" Value="{StaticResource Catrinity}"></Setter>
+        <Setter Property="FontSize" Value="16"></Setter>
+        <Setter Property="BorderBrush" Value="Black"></Setter>
+        <Setter Property="Foreground" Value="Black"></Setter>
+    </Style>
+</Styles>
