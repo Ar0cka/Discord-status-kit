@@ -1,0 +1,2 @@
+D:\Repositor\FakePresence\DiscordRichPresence\bin\Release\net9.0\win-x64\publish\DiscordRichPresence.pdb
+D:\Repositor\FakePresence\DiscordRichPresence\bin\Release\net9.0\win-x64\publish\DiscordRichPresence.exe

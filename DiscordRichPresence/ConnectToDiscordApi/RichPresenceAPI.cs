@@ -104,6 +104,8 @@ public class RichPresenceAPI
         return json;
     }
     
+    
+    
     /// <summary>
     /// Запускает цикл обновления presence
     /// </summary>
@@ -123,22 +125,16 @@ public class RichPresenceAPI
         
         Console.WriteLine($"Handshake OK {read}");
 
-        // Теперь можно обновлять presence
-        while (true)
+        try
         {
-            try
-            {
-                if (_discordRpcClient.IsConnected)
-                    await UpdateConfig(_currentContext);
-            }
-            catch (IOException ex)
-            {
-                Console.WriteLine("Pipe broken, reconnecting: " + ex.Message);
-                await Task.Delay(1000);
-            }
-
-            await Task.Delay(10000);
+            if (_discordRpcClient.IsConnected)
+                await UpdateConfig(_currentContext); 
         }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Pipe broken {e.Message}");
+        }
+     
     }
 
     public async Task UpdateCurrentContext(DiscordRichPresenceContext context)

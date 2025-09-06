@@ -2018,11 +2018,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Discrod Rich\\DiscordRichPresence\\DiscordRichPresence\\DiscordRichPresence.csproj",
+      "projectUniqueName": "D:\\Repositor\\FakePresence\\DiscordRichPresence\\DiscordRichPresence.csproj",
       "projectName": "DiscordRichPresence",
-      "projectPath": "D:\\Discrod Rich\\DiscordRichPresence\\DiscordRichPresence\\DiscordRichPresence.csproj",
+      "projectPath": "D:\\Repositor\\FakePresence\\DiscordRichPresence\\DiscordRichPresence.csproj",
       "packagesPath": "C:\\Users\\vanos\\.nuget\\packages\\",
-      "outputPath": "D:\\Discrod Rich\\DiscordRichPresence\\DiscordRichPresence\\obj\\",
+      "outputPath": "D:\\Repositor\\FakePresence\\DiscordRichPresence\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

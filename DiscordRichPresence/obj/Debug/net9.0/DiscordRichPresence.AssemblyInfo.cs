@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DiscordRichPresence")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f5775c50b32bd0df53752bfae86f0124bfde83f0")]
 [assembly: System.Reflection.AssemblyProductAttribute("DiscordRichPresence")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DiscordRichPresence")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
